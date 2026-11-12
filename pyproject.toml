@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "gha-audit"
+version = "1.0.0"
+description = "GitHub Actions Security Audit Toolkit — offline, zero-dependency workflow auditing"
+readme = "README.md"
+requires-python = ">=3.8"
+license = { text = "MIT" }
+authors = [{ name = "Baran Avisat", email = "baranavisat@gmail.com" }]
+keywords = ["github-actions", "security", "ci-cd", "sast", "audit", "devsecops"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Intended Audience :: System Administrators",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+]
+# Intentionally empty: the scanner, fixers and reporters use only the
+# Python standard library so the tool runs offline on a bare interpreter.
+dependencies = []
+
+[project.scripts]
+gha-audit = "gha_audit.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/aoodiakdiro0001-ops/gha-audit"
+Issues = "https://github.com/aoodiakdiro0001-ops/gha-audit/issues"
+
+[tool.setuptools]
+packages = ["gha_audit"]

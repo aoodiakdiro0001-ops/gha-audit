@@ -1,0 +1,43 @@
+name: ci
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run unit tests
+        run: python -m unittest discover -s tests -v
+      - name: Build sdist/wheel
+        run: |
+          python -m pip install --upgrade build
+          python -m build
+  self-audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: "3.12"
+      - name: Install gha-audit from source
+        run: pip install .
+      - name: Audit this repository with gha-audit
+        # --i-own-this: the checkout's origin owner is this repository.
+        run: gha-audit scan . --i-own-this --fail-on high --no-color
+      - name: Emit SARIF artifact
+        if: always()
+        run: gha-audit scan . --i-own-this --fail-on none --format sarif --output gha-audit.sarif --no-color
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
+        if: always()
+        with:
+          name: gha-audit-sarif
+          path: gha-audit.sarif

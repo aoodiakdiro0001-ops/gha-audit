@@ -1,0 +1,6 @@
+"""gha_audit — GitHub Actions Security Audit Toolkit."""
+__version__ = "1.0.0"
+__author__ = "Baran Avisat"
+__email__ = "baranavisat@gmail.com"
+__license__ = "MIT"
+__copyright__ = "© 2026 Baran Avisat"
